@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SupplyStack Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="sidebar">
+        <h2>SupplyStack</h2>
+        <ul>
+            <li onclick="showSection('staff')">Staff</li>
+            <li onclick="showSection('items')">Items</li>
+            <li onclick="showSection('transactions')">Transactions</li>
+
+            <li onclick="showSection('lowstock')" style="color: #e74c3c; font-weight: bold; border: 1px solid #e74c3c; display: flex; justify-content: space-between; margin-top: 15px;">
+                Low Stock
+                <span id="sidebar-low-badge" style="background: white; color: #e74c3c; border-radius: 50%; padding: 2px 7px; font-size: 12px;">0</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main">
+
+        <div class="cards">
+            <div class="card blue">Total Staff <p id="total-staff">0</p></div>
+            <div class="card green">Total Items <p id="total-items">0</p></div>
+            <div class="card orange">Transactions <p id="total-transactions">0</p></div>
+            <div class="card purple">Total Stock <p id="total-stock">0</p></div>
+            <div class="card red">Low Stock <p id="low-stock">0</p></div>
+        </div>
+
+        <canvas id="transactionChart"></canvas>
+
+        <div id="staff-section">
+            <h2>Staff</h2>
+            <input type="text" placeholder="Search..." onkeyup="searchTable(this, 'staff-body')">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Employee #</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="staff-body"></tbody>
+            </table>
+        </div>
+
+        <div id="items-section" style="display:none;">
+            <h2>Items</h2>
+
+            <section style="background:white; padding:20px; border-radius:10px; margin-bottom:20px; border:1px solid #ddd;">
+                <h3>Add New Ingredient</h3>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <input id="item-name-input" type="text" placeholder="Ingredient Name (e.g., Free Range Eggs)">
+                    <input id="item-sku-input" type="text" placeholder="SKU (e.g., DY-005)">
+
+                    <select id="item-category-input"></select>
+                    <select id="item-supplier-input"></select>
+
+                    <input id="item-uom-input" type="text" placeholder="Unit of Measure (e.g., trays)">
+
+                    <div style="display: flex; gap: 10px;">
+                        <input id="item-stock-input" type="number" placeholder="Initial Stock" style="flex:1;">
+                        <input id="item-min-input" type="number" placeholder="Min. Stock" style="flex:1;">
+                    </div>
+                </div>
+                <button onclick="addNewIngredient()" style="background:#2ecc71; color:white; border:none; padding:10px 20px; border-radius:5px; margin-top:10px; cursor:pointer;">
+                    Save Ingredient
+                </button>
+            </section>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Supplier</th>
+                        <th>Stock</th>
+                        <th>Min</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="items-body"></tbody>
+            </table>
+        </div>
+
+        <div id="lowstock-section" style="display:none;">
+            <h2 style="color: #e74c3c;">Low Stock Alerts</h2>
+            <p style="margin-bottom: 15px; color: #666;">The following ingredients are currently low on stock and need to be reordered.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="background: #e74c3c;">ID</th>
+                        <th style="background: #e74c3c;">Name</th>
+                        <th style="background: #e74c3c;">Category</th>
+                        <th style="background: #e74c3c;">Supplier</th>
+                        <th style="background: #e74c3c;">Stock</th>
+                        <th style="background: #e74c3c;">Min</th>
+                        <th style="background: #e74c3c;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="lowstock-body"></tbody>
+            </table>
+        </div>
+
+        <div id="transactions-section" style="display:none;">
+            <h2>Transactions</h2>
+
+            <h3>Add Transaction</h3>
+
+            <select id="item-id"></select>
+            <select id="staff-id"></select>
+
+            <select id="type">
+                <option value="IN">Stock In</option>
+                <option value="OUT">Stock Out</option>
+            </select>
+
+            <input id="qty" placeholder="Quantity">
+
+            <button onclick="addTransaction()">Add</button>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Item</th>
+                        <th>Staff</th>
+                        <th>Type</th>
+                        <th>Qty</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="transactions-body"></tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/admindashboard.js"></script>
+<script src="js/theme-init.js"></script>
+
+</body>
+</html>
